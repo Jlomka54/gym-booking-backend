@@ -1,9 +1,9 @@
 import express from 'express';
-// import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { getEnvVar } from './utils/getEnvVar.js';
 // require('dotenv').config();
+import { getTrainers, getTrainersbuId } from './services/trainer.js';
 
 dotenv.config();
 
@@ -12,8 +12,30 @@ export const startServer = () => {
   app.use(cors());
   app.use(express.json());
 
-  app.get('/trener', (req, res) => {
-    res.send('API работает');
+  app.get('/trainers', async (req, res) => {
+    const data = await getTrainers();
+    res.json({
+      status: 200,
+      message: 'Ssuccessfully found trainers',
+      data,
+    });
+  });
+  app.get('/trainers/:id', async (req, res) => {
+    const { id } = req.params;
+    const data = await getTrainersbuId(id);
+
+    if (!data) {
+      return res.status(404).json({
+        status: 404,
+        message: `Trainer with id=${id} not found`,
+      });
+    }
+
+    res.json({
+      status: 200,
+      message: `Ssuccessfully find  trainers with id ${id}`,
+      data,
+    });
   });
 
   app.use((req, res) => {
@@ -33,16 +55,3 @@ export const startServer = () => {
     console.log(`Server running on  ${PORT} port`);
   });
 };
-
-// Подключение к MongoDB
-// mongoose
-//   .connect(process.env.MONGO_URI, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//   })
-//   .then(() => {
-//     console.log('MongoDB connected');
-//   })
-//   .catch((err) => {
-//     console.error('MongoDB error:', err);
-//   });
