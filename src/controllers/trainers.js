@@ -1,5 +1,6 @@
 import * as trainerServices from '../services/trainer.js';
 import createHttpError from 'http-errors';
+
 export const getTrainersController = async (req, res) => {
   const data = await trainerServices.getTrainers();
   res.json({

@@ -9,7 +9,6 @@ export const addTrainer = (data) => TrainerCollection.create(data);
 export const updateTrainer = async (_id, data, options = {}) => {
   const { upsert = false } = options;
   const result = await TrainerCollection.findOneAndUpdate({ _id }, data, {
-    new: true,
     upsert,
     includeResultMetadata: true,
   });
