@@ -1,8 +1,23 @@
 import * as trainerServices from '../services/trainer.js';
 import createHttpError from 'http-errors';
+import { parsePaginationParams } from '../utils/parsePaginationParams.js';
+import { parseSortParams } from '../utils/parseSortParams.js';
+import { sortByList } from '../db/models/Trainer.js';
+import { parseTrainersFilterParams } from '../utils/filter/parseTrainersParams.js';
 
 export const getTrainersController = async (req, res) => {
-  const data = await trainerServices.getTrainers();
+  const { page, perPage } = parsePaginationParams(req.query);
+  const { sortBy, sortOrder } = parseSortParams(req.query, sortByList);
+  const filter = parseTrainersFilterParams(req.query);
+
+  const data = await trainerServices.getTrainers({
+    page,
+    perPage,
+    sortBy,
+    sortOrder,
+    filter,
+  });
+
   res.json({
     status: 200,
     message: 'Ssuccessfully found trainers',

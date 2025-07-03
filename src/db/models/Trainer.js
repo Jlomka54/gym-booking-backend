@@ -42,8 +42,16 @@ const trainerSchema = new Schema(
 );
 trainerSchema.post('save', handleSaveError);
 trainerSchema.pre('findOneAndUpdate', setUpdateSetting);
-
 trainerSchema.post('findOneAndUpdate', handleSaveError);
+export const sortByList = [
+  '_id',
+  'name',
+  'email',
+  'specialization',
+  'rating',
+  'acceptingNew',
+  'experienceYears',
+];
 
 const TrainerCollection = model('trainer', trainerSchema);
 export default TrainerCollection;
