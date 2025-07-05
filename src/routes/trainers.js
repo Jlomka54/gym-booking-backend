@@ -8,8 +8,10 @@ import {
   trainerUpdateSchema,
 } from '../validation/trainers.js';
 import { isValidId } from '../middlewares/isValidId.js';
+import { authenticate } from '../middlewares/autheticate.js';
 
 const trainersRouter = Router();
+trainersRouter.use(authenticate);
 
 trainersRouter.get('/', ctrlWrapper(trainersController.getTrainersController));
 trainersRouter.get(
